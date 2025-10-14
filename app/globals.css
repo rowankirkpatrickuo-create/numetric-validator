@@ -1,0 +1,448 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* If you prefer the KaTeX stylesheet globally, you can import it here.
+   Otherwise keep it in the Editor component. Uncomment if desired. */
+/* @import "katex/dist/katex.min.css"; */
+
+/* =======================
+   Base layer (resets, tokens)
+   ======================= */
+@layer base {
+  :root {
+    /* --- Numetric brand palette --- */
+    --bg: #f7fbfd; /* light brand background */
+    --card: #ffffff;
+    --text: #0f3342; /* brand navy for headings/body */
+    --muted: #6b7280;
+    --border: #e5e7eb;
+
+    --primary: #0f3342; /* brand navy */
+    --primary-700: #124457; /* hover/darker */
+    --primary-200: #c7d7de; /* subtle borders */
+
+    --secondary: #2fa85a; /* brand green */
+    --accent: #f4b400; /* brand gold */
+
+    --ok: #065f46;
+    --warn: #b91c1c;
+
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 10px 30px rgba(15, 51, 66, 0.12);
+    --focus: 0 0 0 3px rgba(47, 168, 90, 0.28); /* green focus ring */
+    --trans: 160ms ease;
+  }
+
+  body {
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 2rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h2,
+  .title {
+    text-align: center;
+    color: var(--primary);
+    margin: 0 0 1.5rem;
+    font-size: 2rem;
+    letter-spacing: -0.01em;
+  }
+
+  button {
+    font-family: inherit;
+  }
+}
+
+/* =======================
+   Components layer (cards, widgets)
+   ======================= */
+@layer components {
+  .app {
+    max-width: 800px;
+    margin: auto;
+    background: var(--card);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  /* Input card */
+  .text-prompt-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+  }
+
+  /* Tools dropdown */
+  .tools {
+    margin: 0 0 0.5rem;
+  }
+  .tools-trigger {
+    display: inline-block;
+    padding: 0.45rem 0.8rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  .tools > details[open] > .tools-trigger {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .tools-menu {
+    border: 1px solid var(--border);
+    border-top: 0;
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    padding: 0.6rem 0.75rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+  .tools-menu details {
+    margin: 0.25rem 0;
+  }
+  .tools-section {
+    display: block;
+    font-weight: 600;
+    color: var(--text);
+    padding: 0.3rem 0.2rem;
+    cursor: pointer;
+  }
+  .tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0.25rem 0 0.5rem;
+  }
+
+  /* Mode toggle */
+  .segmented {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+  }
+  .seg-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+  }
+  .seg-btn.seg-selected {
+    background: rgba(47, 168, 90, 0.12); /* green highlight */
+    border-color: rgba(47, 168, 90, 0.35);
+    font-weight: 600;
+  }
+  .seg-hint {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  /* MathLive editor look (single, deduped) */
+  .mathfield {
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    font-size: 1.1rem; /* make math nice and legible */
+  }
+  .mathfield:focus {
+    outline: none;
+    box-shadow: var(--focus);
+    border-color: var(--primary);
+  }
+
+  /* Symbol buttons */
+  .symbol-btn {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease,
+      transform 160ms ease;
+  }
+  .symbol-btn:hover {
+    background: #f3f7fb;
+    border-color: var(--primary-200);
+    transform: translateY(-1px);
+  }
+
+  /* Live preview */
+  .preview {
+    margin-top: 1rem;
+    background: #f7fbfd;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+  }
+
+  /* Textarea in the form */
+  .text-prompt-input textarea {
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid #d1d5db;
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--trans), box-shadow var(--trans),
+      background-color var(--trans);
+  }
+  .text-prompt-input textarea::placeholder {
+    color: var(--muted);
+  }
+  .text-prompt-input textarea:focus {
+    border-color: var(--primary);
+    box-shadow: var(--focus);
+  }
+
+  .helper {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .helper code {
+    background: #f3f7fb;
+    border: 1px solid var(--primary-200);
+    padding: 0.05rem 0.35rem;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas,
+      "Liberation Mono", monospace;
+  }
+
+  /* Primary submit */
+  .text-prompt-input button[type="submit"] {
+    align-self: flex-start;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--primary);
+    color: #fff;
+    transition: transform var(--trans), background-color var(--trans),
+      box-shadow var(--trans);
+    box-shadow: 0 4px 14px rgba(15, 51, 66, 0.18);
+  }
+  .text-prompt-input button[type="submit"]:hover {
+    background-color: var(--primary-700);
+    transform: translateY(-1px);
+  }
+  .text-prompt-input button[type="submit"]:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* Secondary buttons */
+  .fb-btn {
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color var(--trans), border-color var(--trans),
+      transform var(--trans);
+  }
+  .fb-btn:hover {
+    background: #f3f7fb;
+    border-color: var(--primary-200);
+    transform: translateY(-1px);
+  }
+  .fb-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  /* Answer card */
+  .response {
+    margin-top: 1.25rem;
+    background-color: #f7fbfd;
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+  }
+  .response strong {
+    display: block;
+    margin-bottom: 0.65rem;
+    font-size: 1.1rem;
+    color: #0f3342;
+    letter-spacing: -0.01em;
+  }
+
+  /* Markdown styling */
+  .md {
+    line-height: 1.6;
+  }
+  .md p {
+    margin: 0.35rem 0;
+  }
+  .md ul,
+  .md ol {
+    margin: 0.35rem 0 0.35rem 1.2rem;
+  }
+  .md code {
+    background: #f5f7fb;
+    border: 1px solid #e5e9f5;
+    border-radius: 6px;
+    padding: 0.05rem 0.35rem;
+    font-size: 0.92rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas,
+      "Liberation Mono", monospace;
+  }
+  .md blockquote {
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.75rem;
+    border-left: 3px solid var(--primary-200);
+    background: rgba(15, 51, 66, 0.05);
+    border-radius: 6px;
+  }
+
+  /* KaTeX tweaks */
+  .katex {
+    font-size: 1.05rem;
+  }
+  .katex-display {
+    margin: 0.5rem 0;
+    overflow-x: auto; /* long equations won’t overflow the card */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.2rem;
+  }
+
+  /* Legacy pre */
+  .response pre {
+    font-family: "Courier New", monospace;
+    font-size: 1rem;
+    color: #1f2937;
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
+    overflow-x: auto;
+    white-space: pre-wrap; /* avoid horizontal scroll for plain text */
+  }
+
+  /* Feedback card */
+  .feedback {
+    margin-top: 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+    box-shadow: var(--shadow);
+  }
+  .fb-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+  }
+  .fb-btn.fb-selected {
+    background: rgba(47, 168, 90, 0.12);
+    border-color: var(--secondary);
+  }
+  .fb-notes {
+    width: 100%;
+    min-height: 84px;
+    padding: 0.7rem 0.8rem;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: var(--text);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color var(--trans), box-shadow var(--trans);
+  }
+  .fb-notes:focus {
+    border-color: var(--primary);
+    box-shadow: var(--focus);
+  }
+  .fb-submit {
+    margin-top: 0.6rem;
+    padding: 0.6rem 1rem;
+    border: 0;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--trans), transform var(--trans),
+      box-shadow var(--trans);
+    box-shadow: 0 4px 14px rgba(15, 51, 66, 0.18);
+  }
+  .fb-submit:hover {
+    background: var(--primary-700);
+    transform: translateY(-1px);
+  }
+  .fb-submit:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .fb-thanks {
+    color: var(--ok);
+    font-weight: 700;
+    margin-left: 0.5rem;
+  }
+}
+
+/* =======================
+   Utilities layer (one-offs)
+   ======================= */
+@layer utilities {
+  /* Brand button utilities (for JSX convenience) */
+  .btn-primary {
+    @apply rounded-lg bg-brand-navy px-4 py-2.5 text-white hover:bg-brand-navy700 shadow-[0_6px_24px_rgba(15,51,66,0.08)];
+  }
+  .btn-outline {
+    @apply rounded-lg border border-brand-navy px-4 py-2.5 text-brand-navy hover:bg-brand-bg;
+  }
+  .chip-gold {
+    @apply inline-flex items-center gap-2 rounded-full bg-brand-bg px-3 py-1 text-xs text-brand-navy;
+  }
+
+  /* Arrange secondary buttons next to submit (kept as your selector) */
+  .text-prompt-input > div[style*="display: flex"] > .fb-btn {
+    margin-left: 0;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+
+  /* Small screen tweaks */
+  @media (max-width: 480px) {
+    body {
+      padding: 1rem;
+    }
+    .app {
+      padding: 1rem;
+    }
+    .text-prompt-input textarea {
+      min-height: 100px;
+    }
+  }
+}

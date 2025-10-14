@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["DOM", "ES2020"],
+    "jsx": "preserve",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowJs": false,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "baseUrl": ".",
+    "paths": {
+      // Explicit aliases used in the codebase
+      "@/components/*": ["./app/components/*"],
+      "@/app/*": ["./app/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/types/*": ["./types/*"],
+
+      // Optional convenience short-hands you had
+      "@app/*": ["./app/*"],
+      "@lib/*": ["./lib/*"],
+
+      // Keep this LAST if you want a catch-all. Prefer not to use it,
+      // but leaving it here won't break the explicit ones above.
+      "@/*": ["./app/*"]
+    },
+
+    "types": ["node", "react", "react-dom"],
+    "skipLibCheck": true,
+    "incremental": true,
+    "plugins": [{ "name": "next" }]
+  },
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,37 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Problem {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  statementMd String
+  finalLatex  String?
+  hints       Json      // [{id,text}, ...]
+  tags        Json      // ["algebra","factoring"]
+  difficulty  Int
+  createdAt   DateTime @default(now())
+
+  sessions    Session[]
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  userId     String
+  problemId  String?
+  steps      Json
+  hintsShown Int      @default(0)
+  status     String   @default("active")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  Problem Problem? @relation(fields: [problemId], references: [id])
+}

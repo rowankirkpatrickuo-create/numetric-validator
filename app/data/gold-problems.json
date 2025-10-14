@@ -1,0 +1,28 @@
+[
+    {
+      "slug": "alg-factor-trinomial-01",
+      "title": "Factor the trinomial",
+      "statementMd": "Factor: $x^2 + 5x + 6$.",
+      "finalLatex": "(x+2)(x+3)",
+      "hints": [
+        { "id": "h1", "text": "Find two numbers that multiply to 6 and add to 5." },
+        { "id": "h2", "text": "They are 2 and 3." },
+        { "id": "h3", "text": "Rewrite as $(x+2)(x+3)$." }
+      ],
+      "tags": ["algebra", "factoring", "trinomial"],
+      "difficulty": 1
+    },
+    {
+      "slug": "calc-derivative-power-01",
+      "title": "Differentiate",
+      "statementMd": "Compute $\\frac{d}{dx}(x^3)$.",
+      "finalLatex": "3x^2",
+      "hints": [
+        { "id": "h1", "text": "Use the power rule: d/dx[x^n] = n x^{n-1}." },
+        { "id": "h2", "text": "Here n = 3 → 3x^2." }
+      ],
+      "tags": ["calculus", "derivative", "power-rule"],
+      "difficulty": 1
+    }
+  ]
+  
